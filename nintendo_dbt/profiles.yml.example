@@ -1,0 +1,7 @@
+nintendo_dbt:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "../nintendo_sales.duckdb"  # Pfad zur DuckDB-Datei (relativ zu diesem Verzeichnis)
+      threads: 4

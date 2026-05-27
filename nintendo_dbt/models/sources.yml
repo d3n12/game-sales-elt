@@ -1,0 +1,35 @@
+version: 2
+
+sources:
+  - name: bronze
+    schema: bronze
+    tables:
+      - name: raw_million_sellers
+        description: "Raw million-seller table data, extracted directly from PDFs"
+        columns:
+          - name: Game Title
+          - name: Global
+          - name: Japan
+          - name: Outside of Japan
+          - name: Life-to-date Global
+          - name: system
+          - name: Fiscal Year
+          - name: as of
+          - name: source
+          - name: ingested_at
+
+  - name: silver
+    schema: silver
+    tables:
+      - name: stg_million_sellers
+        description: "Cleaned million-seller data, transformed via Python"
+        columns:
+          - name: game_title
+          - name: platform_name
+          - name: fiscal_year
+          - name: snapshot_date
+          - name: global_sales
+          - name: japan_sales
+          - name: outside_japan_sales
+          - name: ltd_global_sales
+          - name: source

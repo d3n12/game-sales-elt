@@ -1,0 +1,13 @@
+name: nintendo_dbt
+version: "1.0.0"
+profile: nintendo_dbt
+
+model-paths: ["models"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  nintendo_dbt:
+    gold:
+      +materialized: table
+      +schema: gold

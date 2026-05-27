@@ -1,0 +1,5 @@
+pdfplumber
+duckdb
+dbt-duckdb
+prefect
+pandas

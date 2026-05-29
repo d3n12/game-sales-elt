@@ -26,13 +26,13 @@ dbt is included in `requirements.txt`.
 ### Run the full pipeline (PDFs → Bronze → Silver → Gold)
 
 ```
-python pipeline.py
+PYTHONPATH=src python src/pipeline.py
 ```
 
 Reads all PDFs in `pdfs/`, loads new rows into Bronze, transforms them via Python into Silver, then runs `dbt run` for Gold.
 
 ```
-python pipeline.py --reset
+PYTHONPATH=src python src/pipeline.py --reset
 ```
 
 Deletes the entire database and re-ingests all data from scratch.
@@ -40,8 +40,14 @@ Deletes the entire database and re-ingests all data from scratch.
 ### Run only dbt (without re-extraction)
 
 ```
-cd nintendo_dbt
+cd src/nintendo_dbt
 dbt run --profiles-dir .
+```
+
+### Run tests
+
+```
+pytest tests/
 ```
 
 ## Database layers
@@ -65,7 +71,7 @@ Table `bronze.raw_million_sellers`: data exactly as in the PDF, no transformatio
 
 ### Silver — Cleaned
 
-Table `silver.stg_million_sellers`: generated from Bronze via Python (`transformers/silver.py`). Titles normalized (Title Case), sales figures as integers (× 10,000), date as `DATE`.
+Table `silver.stg_million_sellers`: generated from Bronze via Python (`src/transformers/silver.py`). Titles normalized (Title Case), sales figures as integers (× 10,000), date as `DATE`.
 
 **Title normalization:**
 - Apostrophe variants normalized to standard apostrophe: U+02BC (`ʼ`) and U+2019 (`'`) → U+0027 (`'`)
@@ -84,23 +90,27 @@ Table `silver.stg_million_sellers`: generated from Bronze via Python (`transform
 ## Project structure
 
 ```
-etl/
+game-sales-elt/
 ├── pdfs/                            # Source PDFs from Nintendo
-├── extractors/
-│   └── million_sellers.py           # Extraction logic (3 PDF formats)
-├── loaders/
-│   └── bronze.py                    # Loads extracted rows into DuckDB (Bronze)
-├── transformers/
-│   └── silver.py                    # Python cleaning Bronze → Silver
-├── nintendo_dbt/
-│   ├── models/
-│   │   └── gold/
-│   │       ├── dim_game.sql
-│   │       ├── dim_platform.sql
-│   │       └── fct_sales.sql
-│   ├── dbt_project.yml
-│   └── profiles.yml                 # Connection to nintendo_sales.duckdb
-├── pipeline.py                      # Orchestrates Extract → Bronze → Silver → dbt
+├── src/
+│   ├── extractors/
+│   │   └── million_sellers.py       # Extraction logic (3 PDF formats)
+│   ├── loaders/
+│   │   └── bronze.py                # Loads extracted rows into DuckDB (Bronze)
+│   ├── transformers/
+│   │   └── silver.py                # Python cleaning Bronze → Silver
+│   ├── nintendo_dbt/
+│   │   ├── models/
+│   │   │   └── gold/
+│   │   │       ├── dim_game.sql
+│   │   │       ├── dim_platform.sql
+│   │   │       └── fct_sales.sql
+│   │   ├── dbt_project.yml
+│   │   └── profiles.yml             # Connection to nintendo_sales.duckdb
+│   └── pipeline.py                  # Orchestrates Extract → Bronze → Silver → dbt
+├── tests/
+│   └── test_extractor.py
+├── conftest.py                      # pytest path setup
 ├── nintendo_sales.duckdb            # Database (not in git)
 └── requirements.txt
 ```

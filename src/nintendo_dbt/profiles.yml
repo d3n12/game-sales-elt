@@ -1,0 +1,7 @@
+nintendo_dbt:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "../../nintendo_sales.duckdb"
+      threads: 4

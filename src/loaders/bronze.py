@@ -1,7 +1,7 @@
 from pathlib import Path
 import duckdb
 
-DB_PATH = Path(__file__).parent.parent / "nintendo_sales.duckdb"
+DB_PATH = Path(__file__).parent.parent.parent / "nintendo_sales.duckdb"
 
 
 def load_to_bronze(

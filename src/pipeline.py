@@ -5,9 +5,9 @@ from pathlib import Path
 import duckdb
 from prefect import flow, task, get_run_logger
 
-from src.extractors.million_sellers import PDF_DIR, FIXED_HEADER, extract_all_pdfs
-from src.loaders.bronze import DB_PATH, load_to_bronze
-from src.transformers.silver import transform_to_silver
+from extractors.million_sellers import PDF_DIR, FIXED_HEADER, extract_all_pdfs
+from loaders.bronze import DB_PATH, load_to_bronze
+from transformers.silver import transform_to_silver
 
 DBT_DIR = Path(__file__).parent / "nintendo_dbt"
 

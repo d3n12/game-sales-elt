@@ -6,7 +6,7 @@ import pdfplumber
 
 _logger = logging.getLogger(__name__)
 
-PDF_DIR = Path(__file__).parent.parent / "pdfs"
+PDF_DIR = Path(__file__).parent.parent.parent / "pdfs"
 
 HEADINGS = {
     "Million-Seller Nintendo First-Party Titles",

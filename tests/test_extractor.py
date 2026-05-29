@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from extractors.million_sellers import (
+from src.extractors.million_sellers import (
     _add_system_column,
     _detect_platform,
     _expand_rows,

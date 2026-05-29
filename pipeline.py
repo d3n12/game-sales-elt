@@ -15,7 +15,7 @@ DBT_DIR = Path(__file__).parent / "nintendo_dbt"
 @task(name="extract-million-sellers")
 def extract_million_sellers() -> list[list[str]]:
     logger = get_run_logger()
-    rows = extract_all_pdfs(PDF_DIR)
+    rows = extract_all_pdfs(PDF_DIR, logger)
     logger.info(f"Extracted: {len(rows)} rows")
     return rows
 
@@ -56,9 +56,10 @@ def run_dbt() -> None:
 
 @flow(name="nintendo-elt-pipeline")
 def nintendo_pipeline(reset: bool = False) -> None:
+    logger = get_run_logger()
     if reset and DB_PATH.exists():
         DB_PATH.unlink()
-        print(f"Database deleted: {DB_PATH}")
+        logger.info(f"Database deleted: {DB_PATH}")
     rows = extract_million_sellers()
     load_million_sellers(rows)
     transform_million_sellers()

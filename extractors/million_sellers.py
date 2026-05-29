@@ -1,10 +1,10 @@
+import logging
 import re
-import sys
 from datetime import datetime
 from pathlib import Path
 import pdfplumber
 
-sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+_logger = logging.getLogger(__name__)
 
 PDF_DIR = Path(__file__).parent.parent / "pdfs"
 
@@ -53,8 +53,8 @@ def _merge_continuation_rows(rows: list[list[str]]) -> list[list[str]]:
         first_empty = not row[0] or row[0] == "-"
         all_others_empty = all(not c or c == "-" for c in row[1:])
         is_continuation = result and (
-            (first_empty and len(non_empty) <= 2) or  # Spaltenheader-Fragment
-            (not first_empty and all_others_empty)     # mehrzeiliger Spieltitel
+            (first_empty and len(non_empty) <= 2) or   # column header fragment
+            (not first_empty and all_others_empty)     # multi-line game title
         )
         if is_continuation:
             prev = result[-1]
@@ -183,7 +183,9 @@ def _extract_data_rows(path: Path) -> list[list[str]]:
     return []
 
 
-def extract_all_pdfs(folder: Path) -> list[list[str]]:
+def extract_all_pdfs(folder: Path, logger: logging.Logger | None = None) -> list[list[str]]:
+    """Extract million-seller rows from all PDFs in folder. Returns a flat list of data rows."""
+    log = logger or _logger
     pdfs = sorted(folder.glob("*.pdf"), key=lambda p: p.name)
     if not pdfs:
         raise FileNotFoundError(f"No PDF files found in {folder}")
@@ -193,6 +195,8 @@ def extract_all_pdfs(folder: Path) -> list[list[str]]:
         rows = _extract_data_rows(path)
         if rows:
             all_rows.extend(rows)
-        print(f"{'OK' if rows else '--'} {path.name} ({len(rows)} rows)")
+        else:
+            log.info("No million-seller table found in %s", path.name)
+        log.info("%s %s (%d rows)", "OK" if rows else "--", path.name, len(rows))
 
     return all_rows

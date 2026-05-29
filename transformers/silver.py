@@ -5,6 +5,7 @@ import pandas as pd
 
 
 def transform_to_silver(conn: duckdb.DuckDBPyConnection) -> int:
+    """Clean and normalize bronze data into silver.stg_million_sellers. Returns row count."""
     df = conn.execute("SELECT * FROM bronze.raw_million_sellers").df()
 
     df = df[df["Game Title"].notna() & ~df["Game Title"].isin(["-", ""])]

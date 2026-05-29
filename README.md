@@ -85,7 +85,7 @@ Table `silver.stg_million_sellers`: generated from Bronze via Python (`transform
 
 ```
 etl/
-├── pdfs/                            # Source PDFs from Nintendo (not in git)
+├── pdfs/                            # Source PDFs from Nintendo
 ├── extractors/
 │   └── million_sellers.py           # Extraction logic (3 PDF formats)
 ├── loaders/

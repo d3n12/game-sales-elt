@@ -13,6 +13,3 @@ nintendo_dbt/profiles.yml
 
 # Claude Code
 .claude/settings.local.json
-
-# Input data
-pdfs/

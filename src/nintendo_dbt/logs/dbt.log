@@ -10048,3 +10048,287 @@ alter table "nintendo_sales"."gold"."dim_game__dbt_tmp" rename to "dim_game"
 [0m12:51:35.239770 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002EF9C367710>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002EFA4149690>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002EFA42386D0>]}
 [0m12:51:35.239770 [debug] [MainThread]: Flushing usage events
 [0m12:51:36.055377 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m12:54:36.561953 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002711FD29C50>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002711FC92D10>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002711FC9A410>]}
+
+
+============================== 12:54:36.565234 | 77c1cefe-d2b5-4a64-a865-6bf0c3c55961 ==============================
+[0m12:54:36.565234 [info ] [MainThread]: Running with dbt=1.11.11
+[0m12:54:36.565234 [debug] [MainThread]: running dbt with arguments {'static_parser': 'True', 'no_print': 'None', 'version_check': 'True', 'target_path': 'None', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'printer_width': '80', 'write_json': 'True', 'introspect': 'True', 'log_cache_events': 'False', 'empty': 'False', 'cache_selected_only': 'False', 'fail_fast': 'False', 'debug': 'False', 'log_format': 'default', 'profiles_dir': '.', 'send_anonymous_usage_stats': 'True', 'quiet': 'False', 'warn_error': 'None', 'partial_parse': 'True', 'invocation_command': 'dbt run --profiles-dir .', 'indirect_selection': 'eager', 'use_colors': 'True', 'use_experimental_parser': 'False', 'log_path': 'C:\\_dev\\_claude\\game-sales-elt\\src\\nintendo_dbt\\logs'}
+[0m12:54:36.809410 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'project_id', 'label': '77c1cefe-d2b5-4a64-a865-6bf0c3c55961', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002711FF3AE50>]}
+[0m12:54:36.884934 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'adapter_info', 'label': '77c1cefe-d2b5-4a64-a865-6bf0c3c55961', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002711B3E9450>]}
+[0m12:54:36.886941 [info ] [MainThread]: Registered adapter: duckdb=1.10.1
+[0m12:54:37.146616 [debug] [MainThread]: checksum: 30a8cc8fdcbf66701b0944d4ccce3fa46dd04b61e5df68b9f16d57b2e0e3f0be, vars: {}, profile: , target: , version: 1.11.11
+[0m12:54:37.233691 [debug] [MainThread]: Partial parsing enabled: 0 files deleted, 0 files added, 0 files changed.
+[0m12:54:37.234693 [debug] [MainThread]: Nothing changed, skipping partial parsing.
+[0m12:54:37.234693 [debug] [MainThread]: Partial parsing enabled, no changes found, skipping parsing
+[0m12:54:37.262050 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'load_project', 'label': '77c1cefe-d2b5-4a64-a865-6bf0c3c55961', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000271203F1410>]}
+[0m12:54:37.357064 [debug] [MainThread]: Wrote artifact WritableManifest to C:\_dev\_claude\game-sales-elt\src\nintendo_dbt\target\manifest.json
+[0m12:54:37.359064 [debug] [MainThread]: Wrote artifact SemanticManifest to C:\_dev\_claude\game-sales-elt\src\nintendo_dbt\target\semantic_manifest.json
+[0m12:54:37.367798 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'resource_counts', 'label': '77c1cefe-d2b5-4a64-a865-6bf0c3c55961', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002711DD84850>]}
+[0m12:54:37.368793 [info ] [MainThread]: Found 3 models, 2 sources, 486 macros
+[0m12:54:37.368793 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'runnable_timing', 'label': '77c1cefe-d2b5-4a64-a865-6bf0c3c55961', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002711EC14290>]}
+[0m12:54:37.370792 [info ] [MainThread]: 
+[0m12:54:37.370792 [info ] [MainThread]: Concurrency: 4 threads (target='dev')
+[0m12:54:37.371795 [info ] [MainThread]: 
+[0m12:54:37.371795 [debug] [MainThread]: Acquiring new duckdb connection 'master'
+[0m12:54:37.375794 [debug] [ThreadPool]: Acquiring new duckdb connection 'list_nintendo_sales'
+[0m12:54:37.475463 [debug] [ThreadPool]: Using duckdb connection "list_nintendo_sales"
+[0m12:54:37.476463 [debug] [ThreadPool]: On list_nintendo_sales: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "nintendo_dbt", "target_name": "dev", "connection_name": "list_nintendo_sales"} */
+
+    
+    select schema_name
+    from system.information_schema.schemata
+    
+    where lower(catalog_name) = '"nintendo_sales"'
+    
+  
+  
+[0m12:54:37.477462 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m12:54:37.494326 [debug] [ThreadPool]: SQL status: OK in 0.017 seconds
+[0m12:54:37.495324 [debug] [ThreadPool]: On list_nintendo_sales: Close
+[0m12:54:37.496324 [debug] [ThreadPool]: Re-using an available connection from the pool (formerly list_nintendo_sales, now create_nintendo_sales_gold)
+[0m12:54:37.497324 [debug] [ThreadPool]: Creating schema "database: "nintendo_sales"
+schema: "gold"
+"
+[0m12:54:37.502323 [debug] [ThreadPool]: Using duckdb connection "create_nintendo_sales_gold"
+[0m12:54:37.502829 [debug] [ThreadPool]: On create_nintendo_sales_gold: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "nintendo_dbt", "target_name": "dev", "connection_name": "create_nintendo_sales_gold"} */
+
+    
+        select type from duckdb_databases()
+        where lower(database_name)='nintendo_sales'
+        and type='sqlite'
+    
+  
+[0m12:54:37.502829 [debug] [ThreadPool]: Opening a new connection, currently in state closed
+[0m12:54:37.503835 [debug] [ThreadPool]: SQL status: OK in 0.001 seconds
+[0m12:54:37.505836 [debug] [ThreadPool]: Using duckdb connection "create_nintendo_sales_gold"
+[0m12:54:37.505836 [debug] [ThreadPool]: On create_nintendo_sales_gold: BEGIN
+[0m12:54:37.506835 [debug] [ThreadPool]: SQL status: OK in 0.000 seconds
+[0m12:54:37.506835 [debug] [ThreadPool]: Using duckdb connection "create_nintendo_sales_gold"
+[0m12:54:37.506835 [debug] [ThreadPool]: On create_nintendo_sales_gold: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "nintendo_dbt", "target_name": "dev", "connection_name": "create_nintendo_sales_gold"} */
+
+    
+    
+        create schema if not exists "nintendo_sales"."gold"
+    
+[0m12:54:37.507837 [debug] [ThreadPool]: SQL status: OK in 0.000 seconds
+[0m12:54:37.508839 [debug] [ThreadPool]: On create_nintendo_sales_gold: COMMIT
+[0m12:54:37.509836 [debug] [ThreadPool]: Using duckdb connection "create_nintendo_sales_gold"
+[0m12:54:37.509836 [debug] [ThreadPool]: On create_nintendo_sales_gold: COMMIT
+[0m12:54:37.521212 [debug] [ThreadPool]: SQL status: OK in 0.011 seconds
+[0m12:54:37.521212 [debug] [ThreadPool]: On create_nintendo_sales_gold: Close
+[0m12:54:37.523212 [debug] [ThreadPool]: Acquiring new duckdb connection 'list_nintendo_sales_gold'
+[0m12:54:37.529746 [debug] [ThreadPool]: Using duckdb connection "list_nintendo_sales_gold"
+[0m12:54:37.530745 [debug] [ThreadPool]: On list_nintendo_sales_gold: BEGIN
+[0m12:54:37.530745 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m12:54:37.531766 [debug] [ThreadPool]: SQL status: OK in 0.001 seconds
+[0m12:54:37.531766 [debug] [ThreadPool]: Using duckdb connection "list_nintendo_sales_gold"
+[0m12:54:37.531766 [debug] [ThreadPool]: On list_nintendo_sales_gold: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "nintendo_dbt", "target_name": "dev", "connection_name": "list_nintendo_sales_gold"} */
+select
+      'nintendo_sales' as database,
+      table_name as name,
+      table_schema as schema,
+      CASE table_type
+        WHEN 'BASE TABLE' THEN 'table'
+        WHEN 'VIEW' THEN 'view'
+        WHEN 'LOCAL TEMPORARY' THEN 'table'
+        END as type
+    from system.information_schema.tables
+    where lower(table_schema) = 'gold'
+    and lower(table_catalog) = 'nintendo_sales'
+  
+[0m12:54:37.535745 [debug] [ThreadPool]: SQL status: OK in 0.003 seconds
+[0m12:54:37.536745 [debug] [ThreadPool]: On list_nintendo_sales_gold: ROLLBACK
+[0m12:54:37.537766 [debug] [ThreadPool]: Failed to rollback 'list_nintendo_sales_gold'
+[0m12:54:37.538765 [debug] [ThreadPool]: On list_nintendo_sales_gold: Close
+[0m12:54:37.539746 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'runnable_timing', 'label': '77c1cefe-d2b5-4a64-a865-6bf0c3c55961', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000027120795490>]}
+[0m12:54:37.539746 [debug] [MainThread]: Using duckdb connection "master"
+[0m12:54:37.540748 [debug] [MainThread]: On master: BEGIN
+[0m12:54:37.540748 [debug] [MainThread]: Opening a new connection, currently in state init
+[0m12:54:37.541747 [debug] [MainThread]: SQL status: OK in 0.001 seconds
+[0m12:54:37.541747 [debug] [MainThread]: On master: COMMIT
+[0m12:54:37.542748 [debug] [MainThread]: Using duckdb connection "master"
+[0m12:54:37.542748 [debug] [MainThread]: On master: COMMIT
+[0m12:54:37.543746 [debug] [MainThread]: SQL status: OK in 0.000 seconds
+[0m12:54:37.543746 [debug] [MainThread]: On master: Close
+[0m12:54:37.549748 [debug] [Thread-1 (]: Began running node model.nintendo_dbt.dim_game
+[0m12:54:37.550753 [debug] [Thread-2 (]: Began running node model.nintendo_dbt.dim_platform
+[0m12:54:37.550753 [debug] [Thread-3 (]: Began running node model.nintendo_dbt.fct_sales
+[0m12:54:37.551748 [info ] [Thread-1 (]: 1 of 3 START sql table model gold.dim_game ..................................... [RUN]
+[0m12:54:37.551748 [info ] [Thread-2 (]: 2 of 3 START sql table model gold.dim_platform ................................. [RUN]
+[0m12:54:37.552748 [info ] [Thread-3 (]: 3 of 3 START sql table model gold.fct_sales .................................... [RUN]
+[0m12:54:37.552748 [debug] [Thread-1 (]: Acquiring new duckdb connection 'model.nintendo_dbt.dim_game'
+[0m12:54:37.553751 [debug] [Thread-2 (]: Acquiring new duckdb connection 'model.nintendo_dbt.dim_platform'
+[0m12:54:37.554748 [debug] [Thread-3 (]: Acquiring new duckdb connection 'model.nintendo_dbt.fct_sales'
+[0m12:54:37.555753 [debug] [Thread-1 (]: Began compiling node model.nintendo_dbt.dim_game
+[0m12:54:37.555753 [debug] [Thread-2 (]: Began compiling node model.nintendo_dbt.dim_platform
+[0m12:54:37.556746 [debug] [Thread-3 (]: Began compiling node model.nintendo_dbt.fct_sales
+[0m12:54:37.562776 [debug] [Thread-1 (]: Writing injected SQL for node "model.nintendo_dbt.dim_game"
+[0m12:54:37.565784 [debug] [Thread-2 (]: Writing injected SQL for node "model.nintendo_dbt.dim_platform"
+[0m12:54:37.568805 [debug] [Thread-3 (]: Writing injected SQL for node "model.nintendo_dbt.fct_sales"
+[0m12:54:37.570782 [debug] [Thread-1 (]: Began executing node model.nintendo_dbt.dim_game
+[0m12:54:37.570782 [debug] [Thread-3 (]: Began executing node model.nintendo_dbt.fct_sales
+[0m12:54:37.571787 [debug] [Thread-2 (]: Began executing node model.nintendo_dbt.dim_platform
+[0m12:54:37.593337 [debug] [Thread-1 (]: Writing runtime sql for node "model.nintendo_dbt.dim_game"
+[0m12:54:37.595316 [debug] [Thread-3 (]: Writing runtime sql for node "model.nintendo_dbt.fct_sales"
+[0m12:54:37.598334 [debug] [Thread-2 (]: Writing runtime sql for node "model.nintendo_dbt.dim_platform"
+[0m12:54:37.599323 [debug] [Thread-1 (]: Using duckdb connection "model.nintendo_dbt.dim_game"
+[0m12:54:37.599323 [debug] [Thread-1 (]: On model.nintendo_dbt.dim_game: BEGIN
+[0m12:54:37.600317 [debug] [Thread-1 (]: Opening a new connection, currently in state init
+[0m12:54:37.600317 [debug] [Thread-2 (]: Using duckdb connection "model.nintendo_dbt.dim_platform"
+[0m12:54:37.600317 [debug] [Thread-3 (]: Using duckdb connection "model.nintendo_dbt.fct_sales"
+[0m12:54:37.601823 [debug] [Thread-1 (]: SQL status: OK in 0.002 seconds
+[0m12:54:37.601823 [debug] [Thread-2 (]: On model.nintendo_dbt.dim_platform: BEGIN
+[0m12:54:37.602830 [debug] [Thread-3 (]: On model.nintendo_dbt.fct_sales: BEGIN
+[0m12:54:37.602830 [debug] [Thread-1 (]: Using duckdb connection "model.nintendo_dbt.dim_game"
+[0m12:54:37.602830 [debug] [Thread-2 (]: Opening a new connection, currently in state init
+[0m12:54:37.603830 [debug] [Thread-3 (]: Opening a new connection, currently in state init
+[0m12:54:37.603830 [debug] [Thread-1 (]: On model.nintendo_dbt.dim_game: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "nintendo_dbt", "target_name": "dev", "node_id": "model.nintendo_dbt.dim_game"} */
+
+  
+    
+    
+
+    create  table
+      "nintendo_sales"."gold"."dim_game__dbt_tmp"
+  
+    as (
+      select distinct
+    md5(game_title)  as game_id,
+    game_title       as title
+from "nintendo_sales"."silver"."stg_million_sellers"
+    );
+  
+  
+[0m12:54:37.604830 [debug] [Thread-2 (]: SQL status: OK in 0.002 seconds
+[0m12:54:37.604830 [debug] [Thread-3 (]: SQL status: OK in 0.002 seconds
+[0m12:54:37.605829 [debug] [Thread-2 (]: Using duckdb connection "model.nintendo_dbt.dim_platform"
+[0m12:54:37.605829 [debug] [Thread-3 (]: Using duckdb connection "model.nintendo_dbt.fct_sales"
+[0m12:54:37.606830 [debug] [Thread-2 (]: On model.nintendo_dbt.dim_platform: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "nintendo_dbt", "target_name": "dev", "node_id": "model.nintendo_dbt.dim_platform"} */
+
+  
+    
+    
+
+    create  table
+      "nintendo_sales"."gold"."dim_platform__dbt_tmp"
+  
+    as (
+      select distinct
+    md5(platform_name)  as platform_id,
+    platform_name       as name
+from "nintendo_sales"."silver"."stg_million_sellers"
+    );
+  
+  
+[0m12:54:37.606830 [debug] [Thread-3 (]: On model.nintendo_dbt.fct_sales: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "nintendo_dbt", "target_name": "dev", "node_id": "model.nintendo_dbt.fct_sales"} */
+
+  
+    
+    
+
+    create  table
+      "nintendo_sales"."gold"."fct_sales__dbt_tmp"
+  
+    as (
+      select
+    md5(game_title || platform_name || cast(snapshot_date as varchar))  as sale_id,
+    md5(game_title)      as game_id,
+    md5(platform_name)   as platform_id,
+    snapshot_date,
+    fiscal_year,
+    global_sales,
+    japan_sales,
+    outside_japan_sales,
+    ltd_global_sales,
+    source
+from "nintendo_sales"."silver"."stg_million_sellers"
+    );
+  
+  
+[0m12:54:37.610840 [debug] [Thread-2 (]: SQL status: OK in 0.004 seconds
+[0m12:54:37.612345 [debug] [Thread-3 (]: SQL status: OK in 0.004 seconds
+[0m12:54:37.612345 [debug] [Thread-1 (]: SQL status: OK in 0.007 seconds
+[0m12:54:37.617349 [debug] [Thread-2 (]: Using duckdb connection "model.nintendo_dbt.dim_platform"
+[0m12:54:37.620356 [debug] [Thread-3 (]: Using duckdb connection "model.nintendo_dbt.fct_sales"
+[0m12:54:37.623370 [debug] [Thread-1 (]: Using duckdb connection "model.nintendo_dbt.dim_game"
+[0m12:54:37.624375 [debug] [Thread-2 (]: On model.nintendo_dbt.dim_platform: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "nintendo_dbt", "target_name": "dev", "node_id": "model.nintendo_dbt.dim_platform"} */
+alter table "nintendo_sales"."gold"."dim_platform__dbt_tmp" rename to "dim_platform"
+[0m12:54:37.624375 [debug] [Thread-3 (]: On model.nintendo_dbt.fct_sales: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "nintendo_dbt", "target_name": "dev", "node_id": "model.nintendo_dbt.fct_sales"} */
+alter table "nintendo_sales"."gold"."fct_sales__dbt_tmp" rename to "fct_sales"
+[0m12:54:37.625351 [debug] [Thread-1 (]: On model.nintendo_dbt.dim_game: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "nintendo_dbt", "target_name": "dev", "node_id": "model.nintendo_dbt.dim_game"} */
+alter table "nintendo_sales"."gold"."dim_game__dbt_tmp" rename to "dim_game"
+[0m12:54:37.626351 [debug] [Thread-2 (]: SQL status: OK in 0.001 seconds
+[0m12:54:37.626351 [debug] [Thread-3 (]: SQL status: OK in 0.000 seconds
+[0m12:54:37.638368 [debug] [Thread-2 (]: On model.nintendo_dbt.dim_platform: COMMIT
+[0m12:54:37.638368 [debug] [Thread-1 (]: SQL status: OK in 0.012 seconds
+[0m12:54:37.639349 [debug] [Thread-3 (]: On model.nintendo_dbt.fct_sales: COMMIT
+[0m12:54:37.640352 [debug] [Thread-2 (]: Using duckdb connection "model.nintendo_dbt.dim_platform"
+[0m12:54:37.641350 [debug] [Thread-1 (]: On model.nintendo_dbt.dim_game: COMMIT
+[0m12:54:37.642351 [debug] [Thread-3 (]: Using duckdb connection "model.nintendo_dbt.fct_sales"
+[0m12:54:37.642351 [debug] [Thread-2 (]: On model.nintendo_dbt.dim_platform: COMMIT
+[0m12:54:37.642351 [debug] [Thread-1 (]: Using duckdb connection "model.nintendo_dbt.dim_game"
+[0m12:54:37.643367 [debug] [Thread-3 (]: On model.nintendo_dbt.fct_sales: COMMIT
+[0m12:54:37.644351 [debug] [Thread-1 (]: On model.nintendo_dbt.dim_game: COMMIT
+[0m12:54:37.646353 [debug] [Thread-2 (]: SQL status: OK in 0.003 seconds
+[0m12:54:37.652349 [debug] [Thread-2 (]: Using duckdb connection "model.nintendo_dbt.dim_platform"
+[0m12:54:37.653350 [debug] [Thread-3 (]: SQL status: OK in 0.008 seconds
+[0m12:54:37.653350 [debug] [Thread-1 (]: SQL status: OK in 0.008 seconds
+[0m12:54:37.653350 [debug] [Thread-2 (]: On model.nintendo_dbt.dim_platform: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "nintendo_dbt", "target_name": "dev", "node_id": "model.nintendo_dbt.dim_platform"} */
+
+      drop table if exists "nintendo_sales"."gold"."dim_platform__dbt_backup" cascade
+    
+[0m12:54:37.655362 [debug] [Thread-3 (]: Using duckdb connection "model.nintendo_dbt.fct_sales"
+[0m12:54:37.657355 [debug] [Thread-1 (]: Using duckdb connection "model.nintendo_dbt.dim_game"
+[0m12:54:37.659350 [debug] [Thread-3 (]: On model.nintendo_dbt.fct_sales: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "nintendo_dbt", "target_name": "dev", "node_id": "model.nintendo_dbt.fct_sales"} */
+
+      drop table if exists "nintendo_sales"."gold"."fct_sales__dbt_backup" cascade
+    
+[0m12:54:37.659350 [debug] [Thread-2 (]: SQL status: OK in 0.001 seconds
+[0m12:54:37.659350 [debug] [Thread-1 (]: On model.nintendo_dbt.dim_game: /* {"app": "dbt", "dbt_version": "1.11.11", "profile_name": "nintendo_dbt", "target_name": "dev", "node_id": "model.nintendo_dbt.dim_game"} */
+
+      drop table if exists "nintendo_sales"."gold"."dim_game__dbt_backup" cascade
+    
+[0m12:54:37.662350 [debug] [Thread-2 (]: On model.nintendo_dbt.dim_platform: Close
+[0m12:54:37.662350 [debug] [Thread-3 (]: SQL status: OK in 0.003 seconds
+[0m12:54:37.665485 [debug] [Thread-1 (]: SQL status: OK in 0.002 seconds
+[0m12:54:37.666485 [debug] [Thread-3 (]: On model.nintendo_dbt.fct_sales: Close
+[0m12:54:37.667485 [debug] [Thread-2 (]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': '77c1cefe-d2b5-4a64-a865-6bf0c3c55961', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002711FF8E310>]}
+[0m12:54:37.668486 [debug] [Thread-1 (]: On model.nintendo_dbt.dim_game: Close
+[0m12:54:37.669485 [debug] [Thread-3 (]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': '77c1cefe-d2b5-4a64-a865-6bf0c3c55961', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000271207DA910>]}
+[0m12:54:37.670486 [info ] [Thread-2 (]: 2 of 3 OK created sql table model gold.dim_platform ............................ [[32mOK[0m in 0.11s]
+[0m12:54:37.670486 [debug] [Thread-1 (]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': '77c1cefe-d2b5-4a64-a865-6bf0c3c55961', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002712078AE90>]}
+[0m12:54:37.671486 [info ] [Thread-3 (]: 3 of 3 OK created sql table model gold.fct_sales ............................... [[32mOK[0m in 0.11s]
+[0m12:54:37.672495 [debug] [Thread-2 (]: Finished running node model.nintendo_dbt.dim_platform
+[0m12:54:37.672495 [info ] [Thread-1 (]: 1 of 3 OK created sql table model gold.dim_game ................................ [[32mOK[0m in 0.12s]
+[0m12:54:37.673493 [debug] [Thread-3 (]: Finished running node model.nintendo_dbt.fct_sales
+[0m12:54:37.674494 [debug] [Thread-1 (]: Finished running node model.nintendo_dbt.dim_game
+[0m12:54:37.676495 [debug] [MainThread]: Using duckdb connection "master"
+[0m12:54:37.676495 [debug] [MainThread]: On master: BEGIN
+[0m12:54:37.677608 [debug] [MainThread]: Opening a new connection, currently in state closed
+[0m12:54:37.678492 [debug] [MainThread]: SQL status: OK in 0.001 seconds
+[0m12:54:37.678492 [debug] [MainThread]: On master: COMMIT
+[0m12:54:37.678492 [debug] [MainThread]: Using duckdb connection "master"
+[0m12:54:37.679491 [debug] [MainThread]: On master: COMMIT
+[0m12:54:37.679491 [debug] [MainThread]: SQL status: OK in 0.000 seconds
+[0m12:54:37.680493 [debug] [MainThread]: On master: Close
+[0m12:54:37.681493 [debug] [MainThread]: Connection 'master' was properly closed.
+[0m12:54:37.681493 [debug] [MainThread]: Connection 'create_nintendo_sales_gold' was properly closed.
+[0m12:54:37.681493 [debug] [MainThread]: Connection 'list_nintendo_sales_gold' was properly closed.
+[0m12:54:37.682493 [debug] [MainThread]: Connection 'model.nintendo_dbt.dim_game' was properly closed.
+[0m12:54:37.682493 [debug] [MainThread]: Connection 'model.nintendo_dbt.dim_platform' was properly closed.
+[0m12:54:37.682493 [debug] [MainThread]: Connection 'model.nintendo_dbt.fct_sales' was properly closed.
+[0m12:54:37.683495 [info ] [MainThread]: 
+[0m12:54:37.683495 [info ] [MainThread]: Finished running 3 table models in 0 hours 0 minutes and 0.31 seconds (0.31s).
+[0m12:54:37.684494 [debug] [MainThread]: Command end result
+[0m12:54:37.706007 [debug] [MainThread]: Wrote artifact WritableManifest to C:\_dev\_claude\game-sales-elt\src\nintendo_dbt\target\manifest.json
+[0m12:54:37.708008 [debug] [MainThread]: Wrote artifact SemanticManifest to C:\_dev\_claude\game-sales-elt\src\nintendo_dbt\target\semantic_manifest.json
+[0m12:54:37.715274 [debug] [MainThread]: Wrote artifact RunExecutionResult to C:\_dev\_claude\game-sales-elt\src\nintendo_dbt\target\run_results.json
+[0m12:54:37.716153 [info ] [MainThread]: 
+[0m12:54:37.716153 [info ] [MainThread]: [32mCompleted successfully[0m
+[0m12:54:37.717152 [info ] [MainThread]: 
+[0m12:54:37.717152 [info ] [MainThread]: Done. PASS=3 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=3
+[0m12:54:37.718152 [debug] [MainThread]: Command `dbt run` succeeded at 12:54:37.718152 after 1.26 seconds
+[0m12:54:37.718152 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000027117E13210>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000027117E1CC50>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002711EC05750>]}
+[0m12:54:37.719152 [debug] [MainThread]: Flushing usage events
+[0m12:54:38.629739 [debug] [MainThread]: An error was encountered while trying to flush usage events

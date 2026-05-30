@@ -129,7 +129,8 @@ game-sales-elt/
 │   │   │   └── gold/
 │   │   │       ├── dim_game.sql
 │   │   │       ├── dim_platform.sql
-│   │   │       └── fct_sales.sql
+│   │   │       ├── fct_sales.sql
+│   │   │       └── schema.yml           # dbt tests (unique, not_null, relationships)
 │   │   ├── dbt_project.yml
 │   │   └── profiles.yml                 # dbt connection config (DuckDB path)
 │   └── pipeline.py                  # Prefect flow: Extract → Bronze → Silver → dbt

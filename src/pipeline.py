@@ -9,7 +9,7 @@ from extractors.million_sellers import PDF_DIR, FIXED_HEADER, extract_all_pdfs
 from loaders.bronze import DB_PATH, load_to_bronze
 from transformers.silver import transform_to_silver
 
-DBT_DIR = Path(__file__).parent / "nintendo_dbt"
+DBT_DIR = Path(__file__).resolve().parent / "nintendo_dbt"
 
 
 @task(name="extract-million-sellers")
@@ -41,10 +41,11 @@ def transform_million_sellers() -> int:
 def run_dbt() -> None:
     logger = get_run_logger()
     result = subprocess.run(
-        ["dbt", "run", "--profiles-dir", "."],
-        cwd=DBT_DIR,
+        "dbt run --profiles-dir .",
+        cwd=str(DBT_DIR),
         capture_output=True,
         text=True,
+        shell=True,
     )
     if result.stdout:
         logger.info(result.stdout)
@@ -52,6 +53,24 @@ def run_dbt() -> None:
         logger.error(result.stderr)
         raise RuntimeError(f"dbt run failed:\n{result.stderr}")
     logger.info("dbt run successful")
+
+
+@task(name="dbt-test")
+def test_dbt() -> None:
+    logger = get_run_logger()
+    result = subprocess.run(
+        "dbt test --profiles-dir .",
+        cwd=str(DBT_DIR),
+        capture_output=True,
+        text=True,
+        shell=True,
+    )
+    if result.stdout:
+        logger.info(result.stdout)
+    if result.returncode != 0:
+        logger.error(result.stderr)
+        raise RuntimeError(f"dbt test failed:\n{result.stderr}")
+    logger.info("dbt test successful")
 
 
 @flow(name="nintendo-elt-pipeline")
@@ -64,6 +83,7 @@ def nintendo_pipeline(reset: bool = False) -> None:
     load_million_sellers(rows)
     transform_million_sellers()
     run_dbt()
+    test_dbt()
 
 
 if __name__ == "__main__":

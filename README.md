@@ -25,7 +25,7 @@ dbt is included in `requirements.txt`.
 
 ### Run the full pipeline (PDFs → Bronze → Silver → Gold)
 
-The pipeline is orchestrated with [Prefect](https://docs.prefect.io/). Each step (extract, bronze load, silver transform, dbt run) is a Prefect task inside the `nintendo-elt-pipeline` flow.
+The pipeline is orchestrated with [Prefect](https://docs.prefect.io/). Each step (extract, bronze load, silver transform, dbt run, dbt test) is a Prefect task inside the `nintendo-elt-pipeline` flow.
 
 **Linux/macOS:**
 ```
@@ -37,7 +37,7 @@ PYTHONPATH=src python src/pipeline.py
 $env:PYTHONPATH="src"; python src/pipeline.py
 ```
 
-Reads all PDFs in `pdfs/`, loads new rows into Bronze, transforms them via Python into Silver, then runs `dbt run` for Gold.
+Reads all PDFs in `pdfs/`, loads new rows into Bronze, transforms them via Python into Silver, then runs `dbt run` for Gold and `dbt test` to validate data quality.
 
 **Linux/macOS:**
 ```
@@ -64,7 +64,16 @@ dbt run --profiles-dir .
 pytest tests/
 ```
 
-Tests run automatically on every push/pull request via GitHub Actions (`.github/workflows/tests.yml`).
+Python unit tests run automatically on every push/pull request via GitHub Actions (`.github/workflows/tests.yml`).
+
+### Run dbt tests (data quality)
+
+```
+cd src/nintendo_dbt
+dbt test --profiles-dir .
+```
+
+Validates uniqueness, not-null constraints, and referential integrity across all Gold tables. Also runs automatically at the end of every pipeline run.
 
 ## Database layers
 

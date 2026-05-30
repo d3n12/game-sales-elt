@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: dim_game
+    columns:
+      - name: game_id
+        tests:
+          - unique
+          - not_null
+      - name: title
+        tests:
+          - unique
+
+  - name: dim_platform
+    columns:
+      - name: platform_id
+        tests:
+          - unique
+          - not_null
+      - name: name
+        tests:
+          - unique
+
+  - name: fct_sales
+    columns:
+      - name: sale_id
+        tests:
+          - unique
+          - not_null
+      - name: game_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_game')
+              field: game_id
+      - name: platform_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_platform')
+              field: platform_id
+      - name: snapshot_date
+        tests:
+          - not_null
+      - name: global_sales
+        tests:
+          - not_null

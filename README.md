@@ -25,14 +25,28 @@ dbt is included in `requirements.txt`.
 
 ### Run the full pipeline (PDFs → Bronze → Silver → Gold)
 
+The pipeline is orchestrated with [Prefect](https://docs.prefect.io/). Each step (extract, bronze load, silver transform, dbt run) is a Prefect task inside the `nintendo-elt-pipeline` flow.
+
+**Linux/macOS:**
 ```
 PYTHONPATH=src python src/pipeline.py
 ```
 
+**Windows (PowerShell):**
+```powershell
+$env:PYTHONPATH="src"; python src/pipeline.py
+```
+
 Reads all PDFs in `pdfs/`, loads new rows into Bronze, transforms them via Python into Silver, then runs `dbt run` for Gold.
 
+**Linux/macOS:**
 ```
 PYTHONPATH=src python src/pipeline.py --reset
+```
+
+**Windows (PowerShell):**
+```powershell
+$env:PYTHONPATH="src"; python src/pipeline.py --reset
 ```
 
 Deletes the entire database and re-ingests all data from scratch.
@@ -49,6 +63,8 @@ dbt run --profiles-dir .
 ```
 pytest tests/
 ```
+
+Tests run automatically on every push/pull request via GitHub Actions (`.github/workflows/tests.yml`).
 
 ## Database layers
 
@@ -106,11 +122,17 @@ game-sales-elt/
 │   │   │       ├── dim_platform.sql
 │   │   │       └── fct_sales.sql
 │   │   ├── dbt_project.yml
-│   │   └── profiles.yml             # Connection to nintendo_sales.duckdb
-│   └── pipeline.py                  # Orchestrates Extract → Bronze → Silver → dbt
+│   │   └── profiles.yml                 # dbt connection config (DuckDB path)
+│   └── pipeline.py                  # Prefect flow: Extract → Bronze → Silver → dbt
 ├── tests/
-│   └── test_extractor.py
-├── conftest.py                      # pytest path setup
+│   ├── test_extractor.py            # Unit tests for extraction helpers
+│   ├── test_bronze_loader.py        # Unit tests for bronze loader (deduplication etc.)
+│   └── test_silver_transformer.py   # Unit tests for silver transformer
+├── .github/
+│   └── workflows/
+│       └── tests.yml                # CI: runs pytest on push/PR
+├── conftest.py                      # pytest path setup (src/ on PYTHONPATH)
+├── prefect.yaml                     # Prefect logging config
 ├── nintendo_sales.duckdb            # Database (not in git)
 └── requirements.txt
 ```

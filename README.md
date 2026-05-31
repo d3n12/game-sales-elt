@@ -178,10 +178,10 @@ The extraction script supports three different PDF layouts Nintendo has used ove
 | Format | Period | Detection |
 |---|---|---|
 | New | from ~FY24 | 5-column table, title in column 1 |
-| Medium | ~FY21–23 | 4-column table, numbers only |
-| Old | ~FY16–20 | Data in plain text only |
+| Medium/Old | FY07–FY23 | 4-column table (numbers only), game titles in page text |
 
 **Known edge cases:**
 - Multi-line titles are reassembled in `_merge_continuation_rows`
 - Broken fonts (each character repeated 4 times) are fixed via `_normalize_text()` — affects e.g. `171030_4e.pdf`
+- Full-width Unicode platform labels (e.g. `Ｗｉｉ` instead of `Wii`) in PDFs from FY07–FY10 are normalized via NFKC in `_normalize_text()`
 - Some older PDFs (e.g. `160727_3e.pdf`) return 0 rows — there were no million-sellers

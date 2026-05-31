@@ -1,5 +1,6 @@
 import logging
 import re
+import unicodedata
 from datetime import datetime
 from pathlib import Path
 import pdfplumber
@@ -19,7 +20,7 @@ FIXED_HEADER = ["Game Title", "Global", "Japan", "Outside of Japan", "Life-to-da
 _NUMBER_RE = re.compile(r"^[\d,]+$|^-$")
 _PLATFORM_PREFIXES = [
     "Nintendo Switch 2", "Nintendo Switch", "Nintendo 3DS",
-    "Wii U", "Nintendo DS", "Wii",
+    "Wii U", "Nintendo DS", "Wii", "Game Boy Advance", "Nintendo GameCube",
 ]
 _SECTION_HEADERS = {"Nintendo Switch 2", "Nintendo Switch"}
 
@@ -76,7 +77,8 @@ def _parse_date_from_filename(path: Path) -> str:
 
 
 def _normalize_text(text: str) -> str:
-    """Fix PDFs where each character is repeated 4 times due to a font rendering bug."""
+    """Normalize full-width Unicode chars to ASCII and fix 4x-repetition font bug."""
+    text = unicodedata.normalize("NFKC", text)
     return re.sub(r"(.)\1{3}", r"\1", text)
 
 

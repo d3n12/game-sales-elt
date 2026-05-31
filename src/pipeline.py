@@ -8,6 +8,7 @@ from prefect import flow, task, get_run_logger
 from extractors.million_sellers import PDF_DIR, FIXED_HEADER, extract_all_pdfs
 from loaders.bronze import DB_PATH, load_to_bronze
 from transformers.silver import transform_to_silver
+from quality.checks import check_extraction_results, check_silver_data
 
 DBT_DIR = Path(__file__).resolve().parent / "nintendo_dbt"
 
@@ -35,6 +36,22 @@ def transform_million_sellers() -> int:
         count = transform_to_silver(conn)
     logger.info(f"Silver: {count} rows transformed")
     return count
+
+
+@task(name="quality-check-extraction")
+def quality_check_extraction(rows: list[list[str]]) -> None:
+    logger = get_run_logger()
+    for w in check_extraction_results(rows):
+        logger.warning(f"[QUALITY] {w}")
+
+
+@task(name="quality-check-silver")
+def quality_check_silver() -> None:
+    logger = get_run_logger()
+    with duckdb.connect(str(DB_PATH)) as conn:
+        warnings = check_silver_data(conn)
+    for w in warnings:
+        logger.warning(f"[QUALITY] {w}")
 
 
 @task(name="dbt-run")
@@ -80,8 +97,10 @@ def nintendo_pipeline(reset: bool = False) -> None:
         DB_PATH.unlink()
         logger.info(f"Database deleted: {DB_PATH}")
     rows = extract_million_sellers()
+    quality_check_extraction(rows)
     load_million_sellers(rows)
     transform_million_sellers()
+    quality_check_silver()
     run_dbt()
     test_dbt()
 

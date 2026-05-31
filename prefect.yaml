@@ -3,3 +3,5 @@ logging:
   loggers:
     extractors.million_sellers:
       level: INFO
+    prefect.server.services.telemetry:
+      level: CRITICAL

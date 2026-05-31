@@ -4,3 +4,5 @@ dbt-duckdb
 prefect
 pandas
 pytest
+streamlit
+plotly

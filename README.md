@@ -10,6 +10,7 @@ Nintendo publishes quarterly financial reports as PDFs containing tables of thei
 2. **Loads** the raw data unchanged into the Bronze layer (`bronze.raw_million_sellers`)
 3. **Transforms** via Python into cleaned data in the Silver layer (`silver.stg_million_sellers`)
 4. **Models** via dbt into dimensions and facts in the Gold layer
+5. **Visualises** the results via a Streamlit dashboard (`dashboard/app.py`)
 
 ## Prerequisites
 
@@ -50,6 +51,14 @@ $env:PYTHONPATH="src"; python src/pipeline.py --reset
 ```
 
 Deletes the entire database and re-ingests all data from scratch.
+
+### Start the dashboard
+
+```powershell
+streamlit run dashboard/app.py
+```
+
+Opens at `localhost:8501`. Requires the database to exist (run the pipeline first). Three tabs: time series comparison, top-sellers, platform overview.
 
 ### Run only dbt (without re-extraction)
 
@@ -136,6 +145,8 @@ game-sales-elt/
 │   │   ├── dbt_project.yml
 │   │   └── profiles.yml                 # dbt connection config (DuckDB path)
 │   └── pipeline.py                  # Prefect flow: Extract → Bronze → Silver → dbt
+├── dashboard/
+│   └── app.py                       # Streamlit dashboard (Zeitreihe, Top-Seller, Plattformen)
 ├── tests/
 │   ├── test_extractor.py            # Unit tests for extraction helpers
 │   ├── test_bronze_loader.py        # Unit tests for bronze loader (deduplication etc.)

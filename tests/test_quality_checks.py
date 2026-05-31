@@ -15,8 +15,7 @@ SILVER_DDL = """
         global_sales BIGINT,
         japan_sales BIGINT,
         outside_japan_sales BIGINT,
-        ltd_global_sales BIGINT,
-        source VARCHAR
+        ltd_global_sales BIGINT
     )
 """
 
@@ -31,7 +30,7 @@ def silver_conn():
 
 def _insert_silver(conn, rows):
     conn.executemany(
-        "INSERT INTO silver.stg_million_sellers VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO silver.stg_million_sellers VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
         rows,
     )
 
@@ -46,7 +45,6 @@ def valid_silver_row(**overrides):
         "japan_sales": 5000000,
         "outside_japan_sales": 7500000,
         "ltd_global_sales": 60000000,
-        "source": "test.pdf",
     }
     defaults.update(overrides)
     return list(defaults.values())

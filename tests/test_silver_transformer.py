@@ -151,7 +151,7 @@ def test_transform_output_columns(conn):
     cols = [col[0] for col in conn.execute("DESCRIBE silver.stg_million_sellers").fetchall()]
     expected = [
         "game_title", "platform_name", "fiscal_year", "snapshot_date",
-        "global_sales", "japan_sales", "outside_japan_sales", "ltd_global_sales", "source",
+        "global_sales", "japan_sales", "outside_japan_sales", "ltd_global_sales",
     ]
     assert cols == expected
 

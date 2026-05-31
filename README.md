@@ -25,7 +25,7 @@ dbt is included in `requirements.txt`.
 
 ### Run the full pipeline (PDFs → Bronze → Silver → Gold)
 
-The pipeline is orchestrated with [Prefect](https://docs.prefect.io/). Each step (extract, bronze load, silver transform, dbt run, dbt test) is a Prefect task inside the `nintendo-elt-pipeline` flow.
+The pipeline is orchestrated with [Prefect](https://docs.prefect.io/). Each step (extract, quality check, bronze load, silver transform, silver quality check, dbt run, dbt test) is a Prefect task inside the `nintendo-elt-pipeline` flow.
 
 **Linux/macOS:**
 ```
@@ -124,6 +124,8 @@ game-sales-elt/
 │   │   └── bronze.py                # Loads extracted rows into DuckDB (Bronze)
 │   ├── transformers/
 │   │   └── silver.py                # Python cleaning Bronze → Silver
+│   ├── quality/
+│   │   └── checks.py                # Data quality checks (extraction + silver)
 │   ├── nintendo_dbt/
 │   │   ├── models/
 │   │   │   └── gold/
@@ -137,7 +139,8 @@ game-sales-elt/
 ├── tests/
 │   ├── test_extractor.py            # Unit tests for extraction helpers
 │   ├── test_bronze_loader.py        # Unit tests for bronze loader (deduplication etc.)
-│   └── test_silver_transformer.py   # Unit tests for silver transformer
+│   ├── test_silver_transformer.py   # Unit tests for silver transformer
+│   └── test_quality_checks.py       # Unit tests for data quality checks
 ├── .github/
 │   └── workflows/
 │       └── tests.yml                # CI: runs pytest on push/PR

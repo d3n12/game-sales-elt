@@ -41,7 +41,7 @@ def transform_to_silver(conn: duckdb.DuckDBPyConnection) -> int:
 
     silver_cols = [
         "game_title", "platform_name", "fiscal_year", "snapshot_date",
-        "global_sales", "japan_sales", "outside_japan_sales", "ltd_global_sales", "source",
+        "global_sales", "japan_sales", "outside_japan_sales", "ltd_global_sales",
     ]
 
     conn.execute("CREATE SCHEMA IF NOT EXISTS silver")

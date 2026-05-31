@@ -7,6 +7,5 @@ select
     global_sales,
     japan_sales,
     outside_japan_sales,
-    ltd_global_sales,
-    source
+    ltd_global_sales
 from {{ source('silver', 'stg_million_sellers') }}

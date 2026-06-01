@@ -12,7 +12,9 @@ def _normalize_title(title: str) -> str:
     title = title.lower()
     title = title.replace("\u2019", "'").replace("\u02bc", "'")  # normalize apostrophes
     title = title.replace("\u2013", "")                          # remove en-dash
+    title = re.sub(r"(pikachu!)\s+(pok)", r"\1 / \2", title)     # insert missing slash in Pok\u00e9mon: Let's Go bundle
     title = re.sub(r"\s*/\s*", " / ", title)                    # normalize slashes
+    title = re.sub(r"\s*(\*+|\u203b|\(\*\d+\))\s*$", "", title) # strip trailing *, \u203b, (*N)
     return " ".join(w.capitalize() for w in title.split())
 
 

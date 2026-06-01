@@ -2,6 +2,7 @@ from pathlib import Path
 
 from src.extractors.million_sellers import (
     _add_system_column,
+    _combine_page_tables,
     _detect_platform,
     _expand_rows,
     _is_old_format,
@@ -225,3 +226,45 @@ def test_parse_rows_from_text_metadata():
 def test_parse_rows_from_text_empty():
     rows = _parse_rows_from_text("No games here", "2024-01-15", "report.pdf")
     assert rows == []
+
+
+# --- _combine_page_tables ---
+
+# Real PDF headers have None in cell[0]; subsequent tables may have slightly
+# different FY text (punctuation, spacing) — headers must be skipped semantically.
+HEADER_FY = [None, "FY24 (Apr.'23 ~ Mar.'24)", None, None, "Life-to-date"]
+HEADER_COL = [None, "Global", "Japan", "Outside of Japan", "Global"]
+
+def test_combine_page_tables_single_table():
+    tables = [
+        [HEADER_FY, HEADER_COL, ["Mario Kart 8 Deluxe", "6,290", "840", "5,450", "72,070"]],
+    ]
+    result = _combine_page_tables(tables)
+    assert len(result) == 3
+    assert result[2][0] == "Mario Kart 8 Deluxe"
+
+def test_combine_page_tables_two_side_by_side():
+    left = [HEADER_FY, HEADER_COL, ["Mario Kart 8 Deluxe", "6,290", "840", "5,450", "72,070"]]
+    # Right table has slightly different FY text (real PDF variation)
+    right_fy = [None, "FY24 (Apr. '23 ~ Mar. '24)", None, None, "Life-to-date"]
+    right = [right_fy, HEADER_COL, ["Splatoon 3", "500", "100", "400", "2,000"]]
+    result = _combine_page_tables([left, right])
+    # 2 header rows (from left) + 2 data rows — right table's headers skipped
+    assert len(result) == 4
+    titles = [r[0] for r in result]
+    assert "Mario Kart 8 Deluxe" in titles
+    assert "Splatoon 3" in titles
+
+def test_combine_page_tables_skips_wrong_column_count():
+    main = [HEADER_FY, ["Mario Kart 8 Deluxe", "6,290", "840", "5,450", "72,070"]]
+    footnote = [["Note"], ["some footnote"]]
+    result = _combine_page_tables([main, footnote])
+    assert len(result) == 2  # footnote ignoriert
+
+def test_combine_page_tables_no_duplicate_header():
+    left = [HEADER_FY, HEADER_COL, ["Game A", "1", "2", "3", "4"]]
+    right_fy = [None, "FY24 (Apr. '23 ~ Mar. '24.)", None, None, "Life-to-date"]
+    right = [right_fy, HEADER_COL, ["Game B", "5", "6", "7", "8"]]
+    result = _combine_page_tables([left, right])
+    data_rows = [r for r in result if r[0] and r[0] not in (None, "-")]
+    assert [r[0] for r in data_rows] == ["Game A", "Game B"]

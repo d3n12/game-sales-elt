@@ -10,6 +10,7 @@ KNOWN_PLATFORMS = {
     "Nintendo DS",
     "Wii",
     "Game Boy Advance",
+    "Nintendo GameCube",
 }
 
 

@@ -105,13 +105,7 @@ Table `bronze.raw_million_sellers`: data exactly as in the PDF, no transformatio
 
 ### Silver — Cleaned
 
-Table `silver.stg_million_sellers`: generated from Bronze via Python (`src/transformers/silver.py`). Titles normalized (Title Case), sales figures as integers (× 10,000), date as `DATE`.
-
-**Title normalization:**
-- Apostrophe variants normalized to standard apostrophe: U+02BC (`ʼ`) and U+2019 (`'`) → U+0027 (`'`)
-- En-dash (`–`, U+2013) removed
-- Slashes normalized to ` / `
-- Each word capitalized (Title Case)
+Table `silver.stg_million_sellers`: Bronze data cleaned via Python — titles normalized to Title Case, sales figures converted to integers (× 10,000), date as `DATE`.
 
 ### Gold — Dimensions and facts
 
@@ -128,7 +122,7 @@ game-sales-elt/
 ├── pdfs/                            # Source PDFs from Nintendo
 ├── src/
 │   ├── extractors/
-│   │   └── million_sellers.py       # Extraction logic (3 PDF formats)
+│   │   └── million_sellers.py       # Extraction logic (2 PDF formats + split-column layout)
 │   ├── loaders/
 │   │   └── bronze.py                # Loads extracted rows into DuckDB (Bronze)
 │   ├── transformers/
@@ -178,10 +172,13 @@ The extraction script supports three different PDF layouts Nintendo has used ove
 | Format | Period | Detection |
 |---|---|---|
 | New | from ~FY24 | 5-column table, title in column 1 |
-| Medium/Old | FY07–FY23 | 4-column table (numbers only), game titles in page text |
+| Old | FY07–FY23 | 4-column table (numbers only), game titles parsed from page text |
+
+FY21–FY24 PDFs additionally use a **split-column layout** within the new format: the table is divided into a left and a right half (or a 3×2 grid) on the same page. This is a layout variation, not a separate format.
 
 **Known edge cases:**
 - Multi-line titles are reassembled in `_merge_continuation_rows`
 - Broken fonts (each character repeated 4 times) are fixed via `_normalize_text()` — affects e.g. `171030_4e.pdf`
 - Full-width Unicode platform labels (e.g. `Ｗｉｉ` instead of `Wii`) in PDFs from FY07–FY10 are normalized via NFKC in `_normalize_text()`
 - Some older PDFs (e.g. `160727_3e.pdf`) return 0 rows — there were no million-sellers
+- **Split left/right layout** (FY21–FY24 era): the million-seller table is split into two side-by-side columns on the same page (sometimes a 3×2 grid)

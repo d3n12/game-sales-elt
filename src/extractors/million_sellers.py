@@ -162,6 +162,79 @@ def _add_system_column(rows: list[list[str]]) -> list[list[str]]:
     return result
 
 
+def _fill_missing_title_cells(page, tables: list, page_tables: list) -> list:
+    """Fix rows where pdfplumber couldn't detect the first-column cell boundary.
+
+    Some PDFs omit the left border line for alternating rows, producing None for
+    cell[0]. We reconstruct the missing bbox from the table's left edge and the
+    adjacent cell, then crop the page to extract the title text directly.
+    """
+    for ti, pt in enumerate(page_tables):
+        if ti >= len(tables):
+            break
+        table_left = pt.bbox[0]
+        for ri, row in enumerate(pt.rows):
+            if ri >= len(tables[ti]):
+                break
+            if row.cells[0] is not None:
+                continue
+            if len(row.cells) < 2 or row.cells[1] is None:
+                continue
+            # Only fix data rows — skip header rows (cell[1] is not a number)
+            raw_cell1 = (tables[ti][ri][1] or "") if tables[ti][ri] else ""
+            if not _looks_like_number(raw_cell1.strip()):
+                continue
+            x1 = row.cells[1][0]
+            # Subtract a small left margin: the detected table edge can be
+            # a fraction of a point to the right of the actual glyph origin,
+            # which causes within_bbox to clip the first character.
+            x0 = max(0, table_left - 2)
+            bbox = (x0, row.bbox[1], x1, row.bbox[3])
+            # x_tolerance=1: default of 3 merges narrow inter-word gaps (e.g.
+            # "XenobladeChronicles"); 1 pt safely separates words (gap ~2 pt)
+            # while keeping intra-glyph kerning (gap ~0 pt) together.
+            text = page.within_bbox(bbox).extract_text(x_tolerance=1) or None
+            if text:
+                tables[ti][ri][0] = text
+    return tables
+
+
+def _is_header_row(row: list) -> bool:
+    """True if a row looks like a table header: first cell empty, others non-numeric."""
+    if not row:
+        return False
+    if row[0] and row[0] != "-":
+        return False
+    non_empty = [c for c in row[1:] if c and c != "-"]
+    return bool(non_empty) and not any(_looks_like_number(c) for c in non_empty)
+
+
+def _combine_page_tables(tables: list) -> list[list[str]]:
+    """Combine multiple side-by-side tables from a single page into one row sequence."""
+    col_count = len(tables[0][0]) if tables[0] else 0
+    combined: list[list[str]] = []
+    first = True
+    for t in tables:
+        if not t or len(t[0]) != col_count:
+            continue
+        expanded = _expand_rows(t)
+        if not expanded:
+            continue
+        if first:
+            combined.extend(expanded)
+            first = False
+        else:
+            # Skip leading header rows from subsequent tables. Headers from
+            # different tables can have minor punctuation differences, so we
+            # detect them semantically (first cell empty, rest non-numeric)
+            # rather than by exact equality.
+            skip = 0
+            while skip < len(expanded) and _is_header_row(expanded[skip]):
+                skip += 1
+            combined.extend(expanded[skip:])
+    return combined
+
+
 def _extract_data_rows(path: Path) -> list[list[str]]:
     """Return the data rows of the million-seller table from a single PDF."""
     as_of = _parse_date_from_filename(path)
@@ -171,12 +244,14 @@ def _extract_data_rows(path: Path) -> list[list[str]]:
             text_lower = text.lower()
             if not any(h.lower() in text_lower for h in HEADINGS):
                 continue
-            tables = page.extract_tables()
-            if not tables:
+            page_tables = page.find_tables()
+            if not page_tables:
                 continue
+            tables = [pt.extract() for pt in page_tables]
             if _is_old_format(tables[0]):
                 return _parse_rows_from_text(text, as_of, path.name)
-            rows = _expand_rows(tables[0])
+            tables = _fill_missing_title_cells(page, tables, page_tables)
+            rows = _combine_page_tables(tables)
             rows = _merge_continuation_rows(rows)
             rows = [[cell or "-" for cell in row] for row in rows]
             rows = _add_system_column(rows)

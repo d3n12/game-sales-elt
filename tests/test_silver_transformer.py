@@ -93,6 +93,36 @@ def test_normalize_title_slash_extra_spaces():
     assert _normalize_title("a  /  b") == "A / B"
 
 
+def test_normalize_title_strips_trailing_asterisk():
+    assert _normalize_title("Super Smash Bros. Ultimate *") == "Super Smash Bros. Ultimate"
+
+def test_normalize_title_strips_trailing_asterisk_no_space():
+    assert _normalize_title("Zelda: Breath of the Wild*") == "Zelda: Breath Of The Wild"
+
+def test_normalize_title_strips_trailing_kome():
+    assert _normalize_title("Some Game ※") == "Some Game"
+
+def test_normalize_title_strips_trailing_numbered_note():
+    assert _normalize_title("Some Game (*1)") == "Some Game"
+
+def test_normalize_title_strips_trailing_numbered_note_no_space():
+    assert _normalize_title("Some Game(*2)") == "Some Game"
+
+def test_normalize_title_no_stripping_mid_title():
+    # Asterisk in the middle of a title must not be removed
+    assert _normalize_title("Pokémon Sword/Pokémon Shield") == "Pokémon Sword / Pokémon Shield"
+
+def test_normalize_title_pokemon_letsgo_missing_slash():
+    # Older PDFs omit the slash between the two bundle titles
+    result = _normalize_title("Pokémon: Let's Go, Pikachu! Pokémon: Let's Go, Eevee!")
+    assert result == "Pokémon: Let's Go, Pikachu! / Pokémon: Let's Go, Eevee!"
+
+def test_normalize_title_pokemon_letsgo_slash_no_spaces():
+    # Newer PDFs have "Pikachu!/ Pokémon" — slash normalizer adds spaces
+    result = _normalize_title("Pokémon: Let's Go, Pikachu!/ Pokémon: Let's Go, Eevee!")
+    assert result == "Pokémon: Let's Go, Pikachu! / Pokémon: Let's Go, Eevee!"
+
+
 # ---------------------------------------------------------------------------
 # _to_units
 # ---------------------------------------------------------------------------

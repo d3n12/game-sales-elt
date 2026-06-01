@@ -10,6 +10,7 @@ models:
       - name: title
         tests:
           - unique
+          - not_null
 
   - name: dim_platform
     columns:
@@ -20,6 +21,7 @@ models:
       - name: name
         tests:
           - unique
+          - not_null
 
   - name: fct_sales
     columns:

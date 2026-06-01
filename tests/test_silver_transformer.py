@@ -122,6 +122,22 @@ def test_normalize_title_pokemon_letsgo_slash_no_spaces():
     result = _normalize_title("Pokémon: Let's Go, Pikachu!/ Pokémon: Let's Go, Eevee!")
     assert result == "Pokémon: Let's Go, Pikachu! / Pokémon: Let's Go, Eevee!"
 
+def test_normalize_title_pokemon_version_stripped():
+    assert _normalize_title("Pokémon Platinum Version") == "Pokémon Platinum"
+
+def test_normalize_title_pokemon_version_without_accent_stripped():
+    assert _normalize_title("Pokemon Platinum Version") == "Pokemon Platinum"
+
+def test_normalize_title_pokemon_heartgold_version_stripped():
+    # "Version" after each bundle name → both stripped
+    result = _normalize_title("Pokémon Heartgold Version / Soulsilver Version")
+    assert result == "Pokémon Heartgold / Soulsilver"
+
+def test_normalize_title_pokemon_heartgold_no_version_unchanged():
+    # Already without "Version" → no change
+    result = _normalize_title("Pokémon Heartgold / Soulsilver")
+    assert result == "Pokémon Heartgold / Soulsilver"
+
 
 # ---------------------------------------------------------------------------
 # _to_units

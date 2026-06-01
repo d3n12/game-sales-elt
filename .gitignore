@@ -9,6 +9,7 @@ __pycache__/
 src/nintendo_dbt/target/
 src/nintendo_dbt/logs/
 src/nintendo_dbt/.user.yml
+logs/
 
 # pytest
 .pytest_cache/

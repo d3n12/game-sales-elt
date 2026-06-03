@@ -6,6 +6,7 @@ import duckdb
 from prefect import flow, task, get_run_logger
 
 from extractors.million_sellers import PDF_DIR, FIXED_HEADER, extract_all_pdfs
+from extractors.wiki_best_sellers import WIKI_HEADER, extract_rows as extract_wiki_rows
 from loaders.bronze import DB_PATH, load_to_bronze
 from transformers.silver import transform_to_silver
 from quality.checks import check_extraction_results, check_silver_data
@@ -26,6 +27,22 @@ def load_million_sellers(rows: list[list[str]]) -> int:
     logger = get_run_logger()
     inserted = load_to_bronze("raw_million_sellers", FIXED_HEADER, rows)
     logger.info(f"Bronze: {inserted} new rows inserted")
+    return inserted
+
+
+@task(name="extract-wiki-best-sellers")
+def extract_wiki_best_sellers() -> list[list[str]]:
+    logger = get_run_logger()
+    rows = extract_wiki_rows()
+    logger.info(f"Extracted: {len(rows)} wiki rows")
+    return rows
+
+
+@task(name="load-wiki-best-sellers-to-bronze")
+def load_wiki_best_sellers(rows: list[list[str]]) -> int:
+    logger = get_run_logger()
+    inserted = load_to_bronze("raw_wiki_best_sellers", WIKI_HEADER, rows)
+    logger.info(f"Bronze: {inserted} new wiki rows inserted")
     return inserted
 
 
@@ -99,6 +116,8 @@ def nintendo_pipeline(reset: bool = False) -> None:
     rows = extract_million_sellers()
     quality_check_extraction(rows)
     load_million_sellers(rows)
+    wiki_rows = extract_wiki_best_sellers()
+    load_wiki_best_sellers(wiki_rows)
     transform_million_sellers()
     quality_check_silver()
     run_dbt()

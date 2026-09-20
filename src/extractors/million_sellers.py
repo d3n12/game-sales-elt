@@ -99,7 +99,7 @@ def _detect_platform(line: str) -> str | None:
 
 
 def _parse_data_line(line: str) -> tuple[str, str, str, str, str] | None:
-    """Parse 'Title N1 N2 N3 N4' — the last 4 tokens are always the sales figures."""
+    """Parse 'Title N1 N2 N3 N4' - the last 4 tokens are always the sales figures."""
     parts = line.split()
     if len(parts) < 5:
         return None
@@ -180,7 +180,7 @@ def _fill_missing_title_cells(page, tables: list, page_tables: list) -> list:
                 continue
             if len(row.cells) < 2 or row.cells[1] is None:
                 continue
-            # Only fix data rows — skip header rows (cell[1] is not a number)
+            # Only fix data rows - skip header rows (cell[1] is not a number)
             raw_cell1 = (tables[ti][ri][1] or "") if tables[ti][ri] else ""
             if not _looks_like_number(raw_cell1.strip()):
                 continue

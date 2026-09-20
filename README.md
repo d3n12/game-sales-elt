@@ -86,7 +86,7 @@ Validates uniqueness, not-null constraints, and referential integrity across all
 
 ## Database layers
 
-### Bronze — Raw data
+### Bronze - Raw data
 
 Table `bronze.raw_million_sellers`: data exactly as in the PDF, no transformation.
 
@@ -103,11 +103,11 @@ Table `bronze.raw_million_sellers`: data exactly as in the PDF, no transformatio
 | `source` | Source PDF filename |
 | `ingested_at` | Timestamp of ingestion |
 
-### Silver — Cleaned
+### Silver - Cleaned
 
-Table `silver.stg_million_sellers`: Bronze data cleaned via Python — titles normalized to Title Case, sales figures converted to integers (× 10,000), date as `DATE`.
+Table `silver.stg_million_sellers`: Bronze data cleaned via Python - titles normalized to Title Case, sales figures converted to integers (× 10,000), date as `DATE`.
 
-### Gold — Dimensions and facts
+### Gold - Dimensions and facts
 
 | Table | Content |
 |---|---|
@@ -163,7 +163,7 @@ The database is stored in `nintendo_sales.duckdb`. **DBeaver** is recommended fo
 2. Point to the `nintendo_sales.duckdb` file
 3. Schemas: `bronze`, `silver`, `gold`
 
-**Note:** Disconnect DBeaver before running `pipeline.py` — DuckDB only allows one concurrent writer.
+**Note:** Disconnect DBeaver before running `pipeline.py` - DuckDB only allows one concurrent writer.
 
 ## PDF formats
 
@@ -178,7 +178,7 @@ FY21–FY24 PDFs additionally use a **split-column layout** within the new forma
 
 **Known edge cases:**
 - Multi-line titles are reassembled in `_merge_continuation_rows`
-- Broken fonts (each character repeated 4 times) are fixed via `_normalize_text()` — affects e.g. `171030_4e.pdf`
+- Broken fonts (each character repeated 4 times) are fixed via `_normalize_text()` - affects e.g. `171030_4e.pdf`
 - Full-width Unicode platform labels (e.g. `Ｗｉｉ` instead of `Wii`) in PDFs from FY07–FY10 are normalized via NFKC in `_normalize_text()`
-- Some older PDFs (e.g. `160727_3e.pdf`) return 0 rows — there were no million-sellers
+- Some older PDFs (e.g. `160727_3e.pdf`) return 0 rows - there were no million-sellers
 - **Split left/right layout** (FY21–FY24 era): the million-seller table is split into two side-by-side columns on the same page (sometimes a 3×2 grid)

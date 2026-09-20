@@ -20,14 +20,26 @@ conn = get_conn()
 tab1, tab2 = st.tabs(["Zeitreihe", "Top-Seller"])
 
 # ---------------------------------------------------------------------------
-# Tab 1 — Zeitreihe
+# Tab 1 - Time series
 # ---------------------------------------------------------------------------
 with tab1:
     alle_spiele = conn.execute(
         "SELECT DISTINCT title FROM gold.dim_game ORDER BY title"
     ).df()["title"].tolist()
 
-    auswahl = st.multiselect("Spiele auswählen", alle_spiele, default=alle_spiele[:2])
+    # Default selection: the two games with the highest lifetime sales (independent of the metric radio below)
+    top_spiele = conn.execute(
+        """
+        SELECT g.title
+        FROM gold.fct_sales f
+        JOIN gold.dim_game g ON f.game_id = g.game_id
+        GROUP BY g.title
+        ORDER BY MAX(f.ltd_global_sales) DESC
+        LIMIT 2
+        """
+    ).df()["title"].tolist()
+
+    auswahl = st.multiselect("Spiele auswählen", alle_spiele, default=top_spiele)
     metrik = st.radio(
         "Metrik",
         ["global_sales", "ltd_global_sales"],
@@ -61,14 +73,15 @@ with tab1:
         st.info("Bitte mindestens ein Spiel auswählen.")
 
 # ---------------------------------------------------------------------------
-# Tab 2 — Top-Seller
+# Tab 2 - Top sellers
 # ---------------------------------------------------------------------------
 with tab2:
     alle_plattformen = conn.execute(
         "SELECT DISTINCT name FROM gold.dim_platform ORDER BY name"
     ).df()["name"].tolist()
 
-    plattform_filter = st.multiselect("Plattform", alle_plattformen, default=alle_plattformen)
+    default_plattformen = [p for p in alle_plattformen if p in ("Nintendo Switch", "Nintendo Switch 2")]
+    plattform_filter = st.multiselect("Plattform", alle_plattformen, default=default_plattformen)
     top_n = st.slider("Top N", min_value=5, max_value=50, value=20)
 
     if plattform_filter:

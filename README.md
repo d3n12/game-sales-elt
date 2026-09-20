@@ -115,6 +115,34 @@ Table `silver.stg_million_sellers`: Bronze data cleaned via Python - titles norm
 | `gold.dim_platform` | Distinct platforms with MD5 surrogate key |
 | `gold.fct_sales` | All sales rows with foreign keys to dim_game/dim_platform |
 
+```mermaid
+erDiagram
+    dim_game ||--o{ fct_sales : game_id
+    dim_platform ||--o{ fct_sales : platform_id
+
+    dim_game {
+        varchar game_id PK
+        varchar title
+    }
+
+    dim_platform {
+        varchar platform_id PK
+        varchar name
+    }
+
+    fct_sales {
+        varchar sale_id PK
+        varchar game_id FK
+        varchar platform_id FK
+        date snapshot_date
+        varchar fiscal_year
+        bigint global_sales
+        bigint japan_sales
+        bigint outside_japan_sales
+        bigint ltd_global_sales
+    }
+```
+
 ## Project structure
 
 ```

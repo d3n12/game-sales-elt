@@ -163,6 +163,21 @@ def test_to_units_empty_string_becomes_zero():
     assert result.iloc[0] == 0
 
 
+def test_to_units_strips_numbered_footnote():
+    result = _to_units(pd.Series(["796(*2)"]))
+    assert result.iloc[0] == 7_960_000
+
+
+def test_to_units_strips_asterisk_footnote():
+    result = _to_units(pd.Series(["796*"]))
+    assert result.iloc[0] == 7_960_000
+
+
+def test_to_units_comma_and_footnote_combined():
+    result = _to_units(pd.Series(["1,796(*2)"]))
+    assert result.iloc[0] == 17_960_000
+
+
 # ---------------------------------------------------------------------------
 # transform_to_silver (integration)
 # ---------------------------------------------------------------------------

@@ -155,3 +155,12 @@ def test_silver_zero_sales_no_plausibility_warning(silver_conn):
     _insert_silver(silver_conn, [valid_silver_row(global_sales=0, ltd_global_sales=0)])
     warnings = check_silver_data(silver_conn)
     assert not any("ltd_global_sales < global_sales" in w for w in warnings)
+
+
+def test_silver_ltd_zero_while_global_positive_flagged(silver_conn):
+    # Regression: a parse error (e.g. an unstripped footnote marker) can coerce
+    # ltd_global_sales to 0 while global_sales is genuinely positive - must not
+    # be silently treated as a legitimate "no data yet" case.
+    _insert_silver(silver_conn, [valid_silver_row(global_sales=7940000, ltd_global_sales=0)])
+    warnings = check_silver_data(silver_conn)
+    assert any("ltd_global_sales < global_sales" in w for w in warnings)

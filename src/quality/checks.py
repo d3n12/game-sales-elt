@@ -54,8 +54,7 @@ def check_silver_data(conn: duckdb.DuckDBPyConnection) -> list[str]:
 
     count = conn.execute(
         "SELECT COUNT(*) FROM silver.stg_million_sellers"
-        " WHERE ltd_global_sales > 0 AND global_sales > 0"
-        " AND ltd_global_sales < global_sales"
+        " WHERE ltd_global_sales < global_sales"
     ).fetchone()[0]
     if count:
         warnings.append(f"{count} rows where ltd_global_sales < global_sales")

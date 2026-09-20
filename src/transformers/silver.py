@@ -21,9 +21,16 @@ def _normalize_title(title: str) -> str:
     return " ".join(w.capitalize() for w in title.split())
 
 
+_FOOTNOTE_SUFFIX_RE = r"\s*(\*+|※|\(\*\d+\))\s*$"
+
+
 def _to_units(series: pd.Series) -> pd.Series:
+    cleaned = (
+        series.str.replace(",", "", regex=False)
+        .str.replace(_FOOTNOTE_SUFFIX_RE, "", regex=True)
+    )
     return (
-        pd.to_numeric(series.str.replace(",", "", regex=False), errors="coerce")
+        pd.to_numeric(cleaned, errors="coerce")
         .fillna(0)
         .astype(int) * 10000
     )
